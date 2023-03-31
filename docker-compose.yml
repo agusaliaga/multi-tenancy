@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+  mg-postgres-a:
+    image: postgres
+    ports:
+      - "5433:5432"
+    networks:
+      - poc_multi_tenancy
+    environment:
+      POSTGRES_USER: a-user
+      POSTGRES_PASSWORD: a-password
+    volumes:
+      - a_postgresql:/var/lib/postgresql
+      - a_postgresql_data:/var/lib/postgresql/data
+    restart: unless-stopped
+  mg-postgres-b:
+    image: postgres
+    ports:
+      - "5434:5432"
+    networks:
+      - poc_multi_tenancy
+    environment:
+      POSTGRES_USER: b-user
+      POSTGRES_PASSWORD: b-password
+    volumes:
+      - b_postgresql:/var/lib/postgresql
+      - b_postgresql_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+networks:
+  poc_multi_tenancy:
+    driver: bridge
+
+volumes:
+  a_postgresql:
+  a_postgresql_data:
+  b_postgresql:
+  b_postgresql_data:
+
